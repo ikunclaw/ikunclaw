@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ikunclaw - 关于</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            background: #f3f4f6;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            padding-top: 60px;
+        }
+
+        :root {
+            --nice-light-blue: #87CEEB;
+            --nice-dark-blue: #73b8d6;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--nice-light-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            font-size: 24px;
+            font-weight: 900;
+            z-index: 101;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        #pageTitle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 22px;
+            font-weight: 700;
+            opacity: 0.95;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--nice-light-blue);
+            color: white;
+            padding: 30px 20px;
+            position: fixed;
+            height: calc(100vh - 60px);
+            left: 0;
+            top: 60px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar.close {
+            left: -240px;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            left: 240px;
+            top: 70px;
+            width: 40px;
+            height: 40px;
+            background: var(--nice-light-blue);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toggle-btn:hover {
+            background: var(--nice-dark-blue);
+        }
+        .sidebar.close + .toggle-btn {
+            left: 0;
+        }
+
+        .nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 16px 22px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            transition: 0.25s ease;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: var(--nice-dark-blue);
+            transform: translateX(6px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 30px 80px;
+            transition: margin 0.3s ease;
+        }
+        .sidebar.close ~ .main {
+            margin-left: 0;
+        }
+
+        .main h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #1c1e21;
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .card h3 {
+            color: var(--nice-dark-blue);
+            margin-bottom: 12px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 46px;
+            height: 46px;
+            background: rgba(135, 206, 235, 0.3);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0.85;
+            z-index: 90;
+        }
+        .back-to-top:hover {
+            background: var(--nice-light-blue);
+            opacity: 1;
+            transform: scale(1.08);
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                padding: 30px 20px;
+            }
+            .header {
+                padding: 0 20px;
+                font-size: 20px;
+            }
+            #pageTitle {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div>ikunclaw</div>
+    <div id="pageTitle">关于</div>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <div class="nav">
+        <a href="index.html">首页</a>
+        <a href="projects.html">项目作品</a>
+        <a href="about.html" class="active">关于</a>
+    </div>
+</div>
+
+<button class="toggle-btn" id="toggleBtn">☰</button>
+
+<div class="main">
+    <h1>关于我</h1>
+
+    <div class="card">
+        <h3>个人信息</h3>
+        <p>👋 你好，我是 ikunclaw，一名前端开发爱好者</p>
+        <p>🎯 专注：静态网站开发、响应式布局、用户交互体验</p>
+        <p>🌟 风格：简约、干净、实用、高颜值</p>
+    </div>
+
+    <div class="card">
+        <h3>技能掌握</h3>
+        <p>✅ HTML5 / CSS3 / JavaScript 基础开发</p>
+        <p>✅ 响应式布局、Flex / Grid 布局</p>
+        <p>✅ GitHub Pages 静态网站部署</p>
+        <p>✅ 自定义域名配置与网站优化</p>
+    </div>
+
+    <div class="card">
+        <h3>网站说明</h3>
+        <p>本网站为纯静态个人主页，无任何框架依赖，打开速度极快。</p>
+        <p>所有页面风格统一，支持导航折叠、平滑滚动、移动端适配。</p>
+        <p>可自由修改内容、图片、样式，打造专属个人网站。</p>
+    </div>
+
+    <div style="height:500px;"></div>
+</div>
+
+<a href="#" class="back-to-top" id="backTop">↑</a>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('close');
+        toggleBtn.textContent = sidebar.classList.contains('close') ? '☰' : '✕';
+    });
+
+    const backTop = document.getElementById('backTop');
+    backTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+</body>
+</html>
