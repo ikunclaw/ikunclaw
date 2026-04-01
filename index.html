@@ -1,0 +1,304 @@
+<!--
+  页面名称：个人工具导航主页
+  作者：ikunclaw
+  GitHub：https://github.com/ikunclaw
+  演示地址：www.ikunclaw.com
+  
+  页面说明：
+  本项目为纯静态个人导航页面，无需后端，可直接部署运行
+  每次打开/刷新页面自动随机更换马卡龙配色
+  支持工具链接跳转、卡片点击弹窗展示等功能
+
+  使用技术：
+  - HTML：页面结构搭建
+  - CSS：样式美化、布局、动画效果
+  - JavaScript：页面交互、随机换色逻辑、弹窗控制
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f8f9ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 840px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .big-card {
+            border-radius: 26px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(180,190,220,0.12);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(255,255,255,0.5);
+            margin-bottom: 18px;
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .bio {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .card-group {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .card-left {
+            flex: 1;
+            display: flex;
+        }
+
+        .card-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            border-radius: 22px;
+            padding: 32px 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(180,190,220,0.12);
+            cursor: pointer;
+            transition: all 0.32s ease;
+            user-select: none;
+            border: 1px solid rgba(255,255,255,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .card-left .card {
+            height: 100%;
+            cursor: default;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .tool-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .tool-item {
+            font-size: 16px;
+            color: #222;
+            margin: 8px 0;
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+            display: block;
+        }
+
+        .tool-item:hover {
+            font-weight: bold;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 14px 28px rgba(180,190,220,0.2);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 440px;
+            border-radius: 28px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-text {
+            color: #222;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="big-card" id="topCard">
+        <img src="https://picsum.photos/200/200" alt="头像" class="avatar">
+        <h1 class="name">开发者</h1>
+        <p class="bio">分享实用工具 | 交流技术</p>
+    </div>
+
+    <div class="card-group">
+        <div class="card-left">
+            <div class="card" id="leftCard">
+                <div class="tool-title">工具分享</div>
+                <a href="https://code.visualstudio.com" target="_blank" class="tool-item">VS Code 官网</a>
+                <a href="https://www.jetbrains.com/idea" target="_blank" class="tool-item">IDEA 官网</a>
+                <a href="https://www.snipaste.com" target="_blank" class="tool-item">Snipaste 官网</a>
+                <a href="https://potplayer.tv" target="_blank" class="tool-item">PotPlayer 官网</a>
+            </div>
+        </div>
+
+        <div class="card-right">
+            <div class="card" id="card1" onclick="openModal('modal1')">
+                <div class="card-icon">📚</div>
+                <h3 class="card-title">关于作者</h3>
+            </div>
+            <div class="card" id="card2" onclick="openModal('modal2')">
+                <div class="card-icon">📞</div>
+                <h3 class="card-title">联系方式</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal1">
+    <div class="modal-content" id="modal1Content">
+        <h2>关于作者</h2>
+        <p class="modal-text">热爱编程、喜欢开发实用工具<br>专注前端、网站建设与自动化</p>
+    </div>
+</div>
+
+<div class="modal" id="modal2">
+    <div class="modal-content" id="modal2Content">
+        <h2>联系方式</h2>
+        <p class="modal-text">微信：dev-user<br>邮箱：dev@example.com<br>GitHub：github.com/dev-user</p>
+    </div>
+</div>
+
+<script>
+    const colorList = [
+        "rgba(255,235,242,0.95)",
+        "rgba(230,248,249,0.95)",
+        "rgba(240,232,255,0.95)",
+        "rgba(255,250,230,0.95)",
+        "rgba(232,245,233,0.95)",
+        "rgba(255,242,235,0.95)",
+        "rgba(232,240,255,0.95)",
+        "rgba(245,235,245,0.95)",
+        "rgba(235,245,240,0.95)",
+        "rgba(255,235,225,0.95)",
+        "rgba(225,240,255,0.95)",
+        "rgba(245,245,225,0.95)"
+    ];
+
+    function getUniqueColors(count) {
+        const temp = [...colorList];
+        const res = [];
+        for (let i = 0; i < count; i++) {
+            const idx = Math.floor(Math.random() * temp.length);
+            res.push(temp.splice(idx, 1)[0]);
+        }
+        return res;
+    }
+
+    const [topColor, leftColor, c1, c2] = getUniqueColors(4);
+
+    document.getElementById('topCard').style.background = topColor;
+    document.getElementById('leftCard').style.background = leftColor;
+    document.getElementById('card1').style.background = c1;
+    document.getElementById('card2').style.background = c2;
+
+    document.getElementById('modal1Content').style.background = c1;
+    document.getElementById('modal2Content').style.background = c2;
+
+    let currentModal = null;
+    function openModal(id) {
+        closeModal();
+        currentModal = document.getElementById(id);
+        currentModal.classList.add('show');
+    }
+    function closeModal() {
+        if (currentModal) {
+            currentModal.classList.remove('show');
+            currentModal = null;
+        }
+    }
+    window.onclick = e => {
+        if (e.target.classList.contains('modal')) closeModal();
+    }
+</script>
+
+</body>
+</html>
